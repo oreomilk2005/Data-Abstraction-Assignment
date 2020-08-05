@@ -18,6 +18,8 @@ public class Customer {
         //create default constructor
         name = "unknown";
         accountNumber = 1;
+        checkBalance = 0;
+        savingBalance = 0;
         deposits = new ArrayList<>();
         withdraws = new ArrayList<>();
     }

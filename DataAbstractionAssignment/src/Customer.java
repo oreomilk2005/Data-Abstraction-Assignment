@@ -14,10 +14,21 @@ public class Customer {
     public static final String SAVING = "Saving";
     private final int OVERDRAFT = -100;
 
+    //Setters and Getters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(int accountNumber) { this.accountNumber = accountNumber; }
     public ArrayList<Deposit> getDeposits() { return deposits; }
-    public ArrayList<Withdraw> getWithdraws() { return withdraws;}
+    public void setDeposits(ArrayList<Deposit> deposits) { this.deposits = deposits; }
+    public ArrayList<Withdraw> getWithdraws() { return withdraws; }
+    public void setWithdraws(ArrayList<Withdraw> withdraws) { this.withdraws = withdraws; }
     public double getCheckBalance() { return checkBalance; }
+    public void setCheckBalance(double checkBalance) { this.checkBalance = checkBalance; }
     public double getSavingBalance() { return savingBalance; }
+    public void setSavingBalance(double savingBalance) { this.savingBalance = savingBalance; }
+    public double getSavingRate() { return savingRate; }
+    public void setSavingRate(double savingRate) { this.savingRate = savingRate; }
 
     Customer(){
         //create default constructor

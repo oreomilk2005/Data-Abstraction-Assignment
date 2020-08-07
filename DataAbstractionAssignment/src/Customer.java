@@ -14,12 +14,20 @@ public class Customer {
     public static final String SAVING = "Saving";
     private final int OVERDRAFT = -100;
 
+    public ArrayList<Deposit> getDeposits() { return deposits; }
+    public ArrayList<Withdraw> getWithdraws() { return withdraws;}
+    public double getCheckBalance() { return checkBalance; }
+    public double getSavingBalance() { return savingBalance; }
+
     Customer(){
         //create default constructor
+        //Initializing name, account number, checkBalance, savingBalance, and SavingRate to a default value.
         name = "unknown";
         accountNumber = 1;
         checkBalance = 0;
         savingBalance = 0;
+        savingRate = 0;
+        //Initializing two new ArrayLists for deposits and withdraws
         deposits = new ArrayList<>();
         withdraws = new ArrayList<>();
     }
@@ -27,8 +35,9 @@ public class Customer {
         //constructor code here
         this.name = name;
         this.accountNumber = accountNumber;
-        this.checkBalance = checkDeposit;
-        this.savingBalance = savingDeposit;
+        checkBalance = checkDeposit;
+        savingBalance = savingDeposit;
+        savingRate = 0;
         deposits = new ArrayList<>();
         withdraws = new ArrayList<>();
     }
@@ -38,31 +47,34 @@ public class Customer {
     //Effects: New deposit in deposit arraylist with amount amt on Date date into account account. Balance in account increases by amt.
     public double deposit(double amt, Date date, String account){
         //your code here
-        deposits.add(new Deposit(amt, date, account));
-        if (account.equals(CHECKING)) checkBalance = checkBalance + amt;
-        else savingBalance = savingBalance + amt;
-        return amt;
+        if(account.equals(CHECKING) || account.equals(SAVING) && amt >= 0) {
+            deposits.add(new Deposit(amt, date, account));
+            if (account.equals(CHECKING)) checkBalance += amt;
+            else savingBalance += amt;
+            return amt;
+        }
+        return -1;
     }
 
     //Requires: double, Date, String
     //Modifies: this
     //Effects: If there is no overdraft, then new withdraw in withdraw arraylist with amount amt, Date date, and account account, and balance in account decreases by amt.
-    public double withdraw(double amt, Date date, String account){
+    public double withdraw(double amt, Date date, String account) {
         //your code here
-        withdraws.add(new Withdraw(amt, date, account));
-        if(!checkOverdraft(amt, account)){
-            if(account.equals(CHECKING)) checkBalance = checkBalance - amt;
-            else savingBalance = savingBalance - amt;
-        }
-        return 0;
+        if (!checkOverdraft(amt, account) && amt >= 0) {
+                withdraws.add(new Withdraw(amt, date, account));
+                if (account.equals(CHECKING)) checkBalance -= amt;
+                else savingBalance -= amt;
+                return amt;
+            }
+        return -1;
     }
 
     private boolean checkOverdraft(double amt, String account){
         //your code here
-        boolean checkOverdraft = false;
-        if(account.equals(CHECKING)) checkOverdraft = !(amt <= checkBalance);
-        if(account.equals(SAVING)) checkOverdraft =!(amt <= savingBalance);
-        return checkOverdraft;
+        if(account.equals(CHECKING)) return amt + OVERDRAFT > checkBalance;
+        if(account.equals(SAVING)) return amt + OVERDRAFT > savingBalance;
+        else return true;
     }
 
     //do not modify
